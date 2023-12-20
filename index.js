@@ -27,7 +27,15 @@ app.get("/:shortId", async (req, res) => {
         }
       }
 
-      res.redirect(entry.redirectURL);
+      // Check if the URL ends with an image extension
+      
+      if (entry.redirectURL.match(/(jpeg|jpg|gif|png)$/i) != null) {
+        res.header('Content-Type', 'image/*');
+        return res.redirect(entry.redirectURL);
+      }
+
+      // For non-image URLs, redirect normally
+      return res.redirect(entry.redirectURL);
     } else {
       res.status(404).send("URL Not Found");
     }
